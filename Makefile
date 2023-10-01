@@ -1,3 +1,5 @@
+include configs/config.toml
+
 .DEFAULT_GOAL := build
 
 cmd_dir = ./cmd
@@ -11,5 +13,8 @@ build:
 run: build
 	@exec $(out_dir)/url-shortner
 
-migration_create:
+migrate_create:
 	@migrate create -ext sql -dir $(migrations_dir) -seq $(name)
+
+migrate_up:
+	@migrate -path $(migrations_dir) -database "postgres://$(postgres_host):$(postgres_port)"
