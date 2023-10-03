@@ -1,2 +1,2 @@
-postgres_host = "127.0.0.1"
-postgres_port = "5432"
+binding_addr = "127.0.0.1:8080"
+database_url = "postgres://postgres@127.0.0.1/godo?sslmode=disable"
