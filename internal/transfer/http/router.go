@@ -1,6 +1,7 @@
 package http
 
 import (
+	"log/slog"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -10,12 +11,14 @@ import (
 type HTTPRouter struct {
 	storage storage.Storage
 	router  *gin.Engine
+	logger  *slog.Logger
 }
 
-func NewRouter(storage storage.Storage) *HTTPRouter {
+func NewRouter(storage storage.Storage, logger *slog.Logger) *HTTPRouter {
 	return &HTTPRouter{
 		storage: storage,
 		router:  gin.Default(),
+		logger:  logger,
 	}
 }
 
