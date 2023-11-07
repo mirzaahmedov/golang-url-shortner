@@ -12,7 +12,10 @@ func (r *HTTPRouter) handleAuthRegister(c *gin.Context) {
 
 	if err := c.ShouldBindJSON(&data); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "something went wrong",
+			"error": gin.H{
+				"name":    "invalid_auth_token",
+				"message": "no authorization token provided",
+			},
 		})
 	}
 
@@ -24,19 +27,28 @@ func (r *HTTPRouter) handleAuthRegister(c *gin.Context) {
 
 	if err := user.EncryptPassword(); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "something went wrong",
+			"error": gin.H{
+				"name":    "unknown_error",
+				"message": "something went wrong. please try again later",
+			},
 		})
 	}
 
 	user, err := r.storage.User().Create(user)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "something went wrong",
+			"error": gin.H{
+				"name":    "validation_error",
+				"message": "validation failed",
+			},
 		})
 	}
 
 	c.JSON(http.StatusCreated, gin.H{
 		"data": user,
+		"meta": gin.H{
+			"message": "created successfully",
+		},
 	})
 }
 
